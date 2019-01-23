@@ -11,6 +11,8 @@ module.exports = (app) => {
           pets: results.docs,
           pagescount: results.pages,
           currentPage: page,
+          hasPreviousPages: page > 1,
+          hasNextPages: page < results.pages
       });
     });
   });

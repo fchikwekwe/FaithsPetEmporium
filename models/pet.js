@@ -4,6 +4,11 @@ const mongoose = require('mongoose'),
         Schema = mongoose.Schema;
 
 const mongoosePaginate = require('mongoose-paginate');
+
+mongoosePaginate.paginate.options = {
+    limit: 3, // how many records on each page
+};
+
 const PetSchema = new Schema({
     name            : { type: String, required: true }
   , species         : { type: String }
