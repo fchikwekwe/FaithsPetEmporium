@@ -1,8 +1,9 @@
-"use strict";
+'use strict';
 
 const mongoose = require('mongoose'),
         Schema = mongoose.Schema;
 
+const mongoosePaginate = require('mongoose-paginate');
 const PetSchema = new Schema({
     name            : { type: String, required: true }
   , species         : { type: String }
@@ -15,5 +16,7 @@ const PetSchema = new Schema({
 {
   timestamps: true
 });
+
+PetSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Pet', PetSchema);
