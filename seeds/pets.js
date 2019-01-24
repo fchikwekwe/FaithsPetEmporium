@@ -9,7 +9,7 @@ module.exports = [
         "description": "Rex is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food"
     },
     {
-        "name": "Fido",
+        "name": "Fido", 
         "species": "Greyhound",
         "birthday": "2008-11-11",
         "favoriteFood": "Liver",
