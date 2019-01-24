@@ -25,13 +25,13 @@ block content
                 while i <= pagescount
                     li.page-item
                         if term
-                            a.page-link(href=`?term=${term}&page=${currentPage - 1}`)= i++
+                            a.page-link(href=`?term=${term}&page=${i}`)= i++
                         else
                             a.page-link(href=`?page=${i}`)= i++
 
                 if hasNextPages
                     li.page-item
                         if term
-                            a.page-link(href=`?term=${term}&page=${i}`)= i++
+                            a.page-link(href=`?term=${term}&page=${parseInt(currentPage) + 1}`) Next
                         else
-                            a.page-link(href=`?page${parseInt(currentPage) +1}`) Next
+                            a.page-link(href=`?page=${parseInt(currentPage) + 1}`) Next

@@ -17,10 +17,11 @@ module.exports = (app) => {
 
     pet.save()
       .then((pet) => {
-        res.redirect(`/pets/${pet._id}`);
+        res.send({ pet: pet });
       })
       .catch((err) => {
         // Handle Errors
+        res.status(400).send(err.errors);
       }) ;
   });
 
@@ -73,7 +74,9 @@ module.exports = (app) => {
                  pets: results.docs,
                  pagescount: results.pages,
                  currentPage: page,
-                 term: req.query.term
+                 term: req.query.term,
+                 hasPreviousPages: page > 1,
+                 hasNextPages: page < results.pages,
              });
           });
       });
