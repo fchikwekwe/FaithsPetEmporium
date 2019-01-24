@@ -1,8 +1,8 @@
 # Pete's Pet Emporium!
 
-This is the starter project of the Pete's Pet tutorial.
+This is the BEW 2.1 course repo where we explored the following concepts. 
 
-## Tasks
+## What Did We Do?
 
 ### Simple Search & Pagination
 Add a search bar in the navbar to search pets. Paginate the results.
