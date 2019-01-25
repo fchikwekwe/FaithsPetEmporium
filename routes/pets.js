@@ -42,13 +42,13 @@ module.exports = (app) => {
 
   // CREATE PET
   app.post('/pets', (req, res, next) => {
-    // // Instantiate a new Pet object
-    // const pet = new Pet(req.body);
-    // save the pet to the database and pass
-    Pet.create(req.body)
-        .then((pet) => {
-        console.log("req.body", req.body);
+    // Instantiate a new Pet object
+    var pet = new Pet(req.body);
+    console.log("req.body", req.body);
+    pet.save(function (petInfo, err) {
+        console.log("pet", petInfo);
         if (req.file) {
+            console.log(req.file);
             client.upload(req.file.path, {}, function (err, versions, meta) {
                 if (err) { return res.status(400).send({ err: err }) };
 
@@ -64,10 +64,6 @@ module.exports = (app) => {
         } else {
             res.send({ pet: pet });
         }
-      })
-      .catch((err) => {
-        // Handle Errors
-        res.status(400).send(err.errors);
       });
   });
 
