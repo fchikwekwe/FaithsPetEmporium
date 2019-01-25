@@ -41,30 +41,31 @@ module.exports = (app) => {
   });
 
   // CREATE PET
-  app.post('/pets', (req, res, next) => {
+  app.post('/pets', upload.single('avatar'), (req, res, next) => {
     // Instantiate a new Pet object
     var pet = new Pet(req.body);
     console.log("req.body", req.body);
-    pet.save(function (petInfo, err) {
-        console.log("pet", petInfo);
+    pet.save(function (err) {
         if (req.file) {
-            console.log(req.file);
+            console.log("file: ", req.file);
             client.upload(req.file.path, {}, function (err, versions, meta) {
                 if (err) { return res.status(400).send({ err: err }) };
 
-                version.forEach((image) => {
+                versions.forEach((image) => {
                     const urlArray = image.url.split('-');
                     urlArray.pop();
                     const url = urlArray.join('-');
                     pet.avatarUrl = url;
                     pet.save();
+                    console.log('here')
                 });
+                console.log('here again')
                 res.send({ pet: pet });
             });
         } else {
             res.send({ pet: pet });
         }
-      });
+      })
   });
 
   // SHOW PET
