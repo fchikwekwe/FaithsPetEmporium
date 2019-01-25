@@ -2,8 +2,14 @@
 # Created by https://www.gitignore.io/api/node,macos
 # Edit at https://www.gitignore.io/?templates=node,macos
 
+### Uploaded files ###
+uploads/
+
 ### ESLint ###
 .eslintrc.json
+
+### Secret Keys ###
+.env
 
 ### macOS ###
 # General

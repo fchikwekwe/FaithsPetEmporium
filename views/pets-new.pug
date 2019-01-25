@@ -5,23 +5,23 @@ block content
   .row.justify-content-center
     .col-sm-6
       legend New Pet
-      form(action="#", id="new-pet", method="post")
+      form(action="/pets", id="new-pet", method="POST")
         .form-group
-            label Name
+            label Name*
             input.form-control(name="name" required)
         .form-group
-            label Species
+            label Birthday*
+            input.form-control(name="birthday" required)
+        .form-group
+            label Species*
             input.form-control(name="species" required)
         .form-group
-            label Rectangular Image URL
-            input.form-control(name="picUrl" required) 
+            label Avatar*
+            input.form-control(name="avatar" type="file" required)
         .form-group
-            label Square Image URL
-            input.form-control(name="picUrlSq" required)   
-        .form-group
-            label Favorite Food
+            label Favorite Food*
             input.form-control(name="favoriteFood" required) 
         .form-group
-            label Description
-            textarea.form-control(name="description" required)   
+            label Description*
+            textarea.form-control(name="description" required minlength="140")   
         button(type="submit").btn.btn-primary Save

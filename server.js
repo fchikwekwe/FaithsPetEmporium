@@ -1,7 +1,9 @@
-if (!process.env.PORT) {
-  require('dotenv').config()
-  process.env.NODE_ENV = "dev"
-}
+require('dotenv').config();
+
+// if (!process.env.PORT) {
+//   require('dotenv').config();
+//   process.env.NODE_ENV = "dev"
+// }
 
 const express = require('express');
 const path = require('path');
@@ -11,7 +13,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
 
-const app = express(); 
+const app = express();
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/petes-pets');

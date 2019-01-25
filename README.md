@@ -1,6 +1,6 @@
 # Pete's Pet Emporium!
 
-This is the BEW 2.1 course repo where we explored the following concepts. 
+This is the BEW 2.1 course repo where we explored the following concepts: 
 
 ## What Did We Do?
 
