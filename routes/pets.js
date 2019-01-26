@@ -49,7 +49,12 @@ module.exports = (app) => {
 
   // NEW PET
   app.get('/pets/new', (req, res) => {
-    res.render('pets-new');
+      if (req.header('content-type') == 'application/json') {
+          res.json({ pets: pets })
+      } else {
+          res.render('pets-new');
+      }
+
   });
 
   // CREATE PET
@@ -80,18 +85,30 @@ module.exports = (app) => {
   // SHOW PET
   app.get('/pets/:id', (req, res) => {
     Pet.findById(req.params.id).exec((err, pet) => {
-      res.render('pets-show', {
-          pet: pet,
-          // For some reason app.locals was not working for this
-          PUBLIC_STRIPE_API_KEY: process.env.PUBLIC_STRIPE_API_KEY,
-      });
+        if (req.header('content-type') == 'application/json') {
+            res.json ({
+                pet: pet,
+                // For some reason app.locals was not working for this
+                PUBLIC_STRIPE_API_KEY: process.env.PUBLIC_STRIPE_API_KEY,
+            })
+        } else {
+            res.render('pets-show', {
+                pet: pet,
+                // For some reason app.locals was not working for this
+                PUBLIC_STRIPE_API_KEY: process.env.PUBLIC_STRIPE_API_KEY,
+            });
+        }
     });
   });
 
   // EDIT PET
   app.get('/pets/:id/edit', (req, res) => {
     Pet.findById(req.params.id).exec((err, pet) => {
-      res.render('pets-edit', { pet: pet });
+        if (req.header('content-type') == 'application/json') {
+            res.json({ pet: pet });
+        } else {
+            res.render('pets-edit', { pet: pet });
+        }
     });
   });
 
@@ -126,7 +143,10 @@ module.exports = (app) => {
             if (err) { return res.status(400).send(err) }
 
             if (req.header('Content-Type') == 'application/json') {
-                return res.json({ pets: pets });
+                return res.json({
+                    pets: pets,
+                    term: req.query.term,
+                });
             } else {
                 return res.render('pets-index', {
                     pets: pets,

@@ -7,13 +7,23 @@ module.exports = (app) => {
     const page = req.query.page || 1
 
     Pet.paginate().then((results) => {
-      res.render('pets-index', {
-          pets: results.docs,
-          pagescount: results.pages,
-          currentPage: page,
-          hasPreviousPages: page > 1,
-          hasNextPages: page < results.pages
-      });
+        if (req.header('content-type') == 'application/json') {
+            res.json({
+                pets: results.docs,
+                pagescount: results.pages,
+                currentPage: page,
+                hasPreviousPages: page > 1,
+                hasNextPages: page < results.pages,
+            })
+        } else {
+            res.render('pets-index', {
+                pets: results.docs,
+                pagescount: results.pages,
+                currentPage: page,
+                hasPreviousPages: page > 1,
+                hasNextPages: page < results.pages,
+            });
+        }
     });
   });
 }

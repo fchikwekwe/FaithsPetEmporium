@@ -36,6 +36,19 @@ describe('Pets', ()  => {
         });
   });
 
+  // TEXT INDEX JSON
+  it('should list ALL pets on /pets GET JSON', function(done) {
+  chai.request(server)
+      .get('/')
+      .set('content-type', 'application/json')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        done();
+      });
+  });
+
   // TEST NEW
   it('should display new form on /pets/new GET', (done) => {
     chai.request(server)
@@ -43,6 +56,19 @@ describe('Pets', ()  => {
         .end((err, res) => {
           res.should.have.status(200);
           res.should.be.html
+          done();
+        });
+  });
+
+  // TEXT NEW JSON
+  it('should send json on /pets/new GET JSON', (done) => {
+    chai.request(server)
+      .get(`/pets/new`)
+        .set('content-type', 'application/json')
+          .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.should.be.a('object');
           done();
         });
   });
