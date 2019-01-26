@@ -1,6 +1,18 @@
 // MODELS
 const Pet = require('../models/pet');
 
+// Require Nodemailer / Mailgun
+const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
+const auth = {
+    auth: {
+        api_key: process.env.MAILGUN_API_KEY,
+        domain: process.env.EMAIL_DOMAIN,
+    }
+}
+
+const nodemailerMailgun = nodemailer.createTransport(mg(auth));
+
 // UPLOADING TO AWS S3
 const multer = require('multer');
 
@@ -140,7 +152,29 @@ module.exports = (app) => {
                 source: token,
             })
             .then((charge) => {
-                res.redirect(`/pets/${req.params.id}`);
+                // SEND EMAIL
+                const user = {
+                  email: req.body.stripeEmail,
+                  amount: charge.amount / 100,
+                  petName: pet.name,
+                };
+
+                nodemailerMailgun.sendMail({
+                  from: 'no-reply@example.com',
+                  to: user.email, // An array if you have multiple recipients.
+                  subject: 'Pet Purchased!',
+                  template: {
+                    name: 'views/email.handlebars',
+                    engine: 'handlebars',
+                    context: user
+                  }
+                }).then(info => {
+                  console.log('Response: ' + info);
+                  res.redirect(`/pets/${req.params.id}`);
+                }).catch(err => {
+                  console.log('Error: ' + err);
+                  res.redirect(`/pets/${req.params.id}`);
+                });
             });
         });
     });

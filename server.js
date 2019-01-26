@@ -9,12 +9,13 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
 
 const app = express();
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/petes-pets');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
