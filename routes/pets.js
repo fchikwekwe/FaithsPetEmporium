@@ -115,26 +115,25 @@ module.exports = (app) => {
 
   // SEARCH PET
   app.get('/search', (req, res) => {
-      const term = new RegExp(req.query.term, 'i')
-      const page = req.query.page || 1
+      Pet
+        .find(
+            { $text : { $search : req.query.term } },
+            { score : { $meta : 'textScore' } },
+        )
+        .sort({ score : { $meta : 'textScore' } })
+        .limit(20)
+        .exec((err, pets) => {
+            if (err) { return res.status(400).send(err) }
 
-      Pet.paginate(
-          {
-              $or: [
-                {'name': term },
-                {'species': term },
-            ]
-        },
-        { page: page }).then((results) => {
-             res.render('pets-index', {
-                 pets: results.docs,
-                 pagescount: results.pages,
-                 currentPage: page,
-                 term: req.query.term,
-                 hasPreviousPages: page > 1,
-                 hasNextPages: page < results.pages,
-             });
-          });
+            if (req.header('Content-Type') == 'application/json') {
+                return res.json({ pets: pets });
+            } else {
+                return res.render('pets-index', {
+                    pets: pets,
+                    term: req.query.term
+                });
+            }
+        });
       });
 
     // PURCHASE PET
