@@ -44,10 +44,9 @@ module.exports = (app) => {
   app.post('/pets', upload.single('avatar'), (req, res, next) => {
     // Instantiate a new Pet object
     var pet = new Pet(req.body);
-    console.log("req.body", req.body);
+
     pet.save(function (err) {
         if (req.file) {
-            console.log("file: ", req.file);
             client.upload(req.file.path, {}, function (err, versions, meta) {
                 if (err) { return res.status(400).send({ err: err }) };
 
@@ -57,9 +56,7 @@ module.exports = (app) => {
                     const url = urlArray.join('-');
                     pet.avatarUrl = url;
                     pet.save();
-                    console.log('here')
                 });
-                console.log('here again')
                 res.send({ pet: pet });
             });
         } else {
@@ -71,7 +68,11 @@ module.exports = (app) => {
   // SHOW PET
   app.get('/pets/:id', (req, res) => {
     Pet.findById(req.params.id).exec((err, pet) => {
-      res.render('pets-show', { pet: pet });
+      res.render('pets-show', {
+          pet: pet,
+          // For some reason app.locals was not working for this
+          PUBLIC_STRIPE_API_KEY: process.env.PUBLIC_STRIPE_API_KEY,
+      });
     });
   });
 
@@ -123,4 +124,24 @@ module.exports = (app) => {
              });
           });
       });
+
+    // PURCHASE PET
+    app.post('/pets/:id/purchase', (req, res) => {
+        console.log(req.body);
+
+        var stripe = require('stripe')(process.env.PRIVATE_STRIPE_API_KEY);
+
+        const token = req.body.stripeToken;
+        Pet.findById(req.body.petId).exec((err, pet) => {
+            const charge = stripe.charges.create({
+                amount: pet.price * 100,
+                currency: 'usd',
+                description: `Purchased ${pet.name}, ${pet.species}`,
+                source: token,
+            })
+            .then((charge) => {
+                res.redirect(`/pets/${req.params.id}`);
+            });
+        });
+    });
 }
