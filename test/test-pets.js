@@ -68,10 +68,10 @@ describe('Pets', ()  => {
           .end((err, res) => {
           res.should.have.status(200);
           res.should.be.json;
-          res.body.should.be.a('object');
           done();
         });
   });
+
 
   // TEST CREATE
   it('should create a SINGLE pet on /pets POST', (done) => {
@@ -88,13 +88,29 @@ describe('Pets', ()  => {
   // TEST SHOW
   it('should show a SINGLE pet on /pets/<id> GET', (done) => {
     var pet = new Pet(fido);
-     pet.save((err, data) => {
-       chai.request(server)
-         .get(`/pets/${data._id}`)
-         .end((err, res) => {
-           res.should.have.status(200);
-           res.should.be.html
-           done();
+    pet.save(() => {
+      chai.request(server)
+        .get(`/pets/${pet._id}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.html
+          done();
+         });
+     });
+
+  });
+
+  // TEST SHOW JSON
+  it('should show a SINGLE pet on /pets/<id> GET JSON', (done) => {
+    var pet = new Pet(fido);
+    pet.save(() => {
+      chai.request(server)
+        .get(`/pets/${pet._id}`)
+        .set('content-type', 'application/json')
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.should.be.json
+            done();
          });
      });
 
@@ -103,9 +119,9 @@ describe('Pets', ()  => {
   // TEST EDIT
   it('should edit a SINGLE pet on /pets/<id>/edit GET', (done) => {
     var pet = new Pet(fido);
-     pet.save((err, data) => {
+     pet.save(() => {
        chai.request(server)
-         .get(`/pets/${data._id}/edit`)
+         .get(`/pets/${pet._id}/edit`)
          .end((err, res) => {
            res.should.have.status(200);
            res.should.be.html
@@ -118,9 +134,9 @@ describe('Pets', ()  => {
   // TEST UPDATE
   it('should update a SINGLE pet on /pets/<id> PUT', (done) => {
     var pet = new Pet(fido);
-    pet.save((err, data)  => {
+    pet.save(()  => {
      chai.request(server)
-      .put(`/pets/${data._id}?_method=PUT`)
+      .put(`/pets/${pet._id}?_method=PUT`)
       .send({'name': 'Spider'})
       .end((err, res) => {
         res.should.have.status(200);
@@ -133,9 +149,9 @@ describe('Pets', ()  => {
   // TEST DELETE
   it('should delete a SINGLE pet on /pets/<id> DELETE', (done) => {
     var pet = new Pet(fido);
-    pet.save((err, data)  => {
+    pet.save(()  => {
      chai.request(server)
-      .delete(`/pets/${data._id}?_method=DELETE`)
+      .delete(`/pets/${pet._id}?_method=DELETE`)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.html

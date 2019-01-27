@@ -50,7 +50,7 @@ module.exports = (app) => {
   // NEW PET
   app.get('/pets/new', (req, res) => {
       if (req.header('content-type') == 'application/json') {
-          res.json({ pets: pets })
+          res.json({})
       } else {
           res.render('pets-new');
       }
@@ -74,12 +74,14 @@ module.exports = (app) => {
                     pet.avatarUrl = url;
                     pet.save();
                 });
+                {
                 res.send({ pet: pet });
+                }
             });
         } else {
             res.send({ pet: pet });
-        }
-      })
+            }
+        })
   });
 
   // SHOW PET
