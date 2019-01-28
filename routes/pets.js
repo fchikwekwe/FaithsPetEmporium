@@ -92,20 +92,23 @@ module.exports = (app) => {
 
   // SHOW PET
   app.get('/pets/:id', (req, res) => {
-    Pet.findById(req.params.id).exec((err, pet) => {
-        if (req.header('content-type') == 'application/json') {
-            res.json ({
-                pet: pet,
-                // For some reason app.locals was not working for this
-                PUBLIC_STRIPE_API_KEY: process.env.PUBLIC_STRIPE_API_KEY,
-            })
-        } else {
-            res.render('pets-show', {
-                pet: pet,
-                // For some reason app.locals was not working for this
-                PUBLIC_STRIPE_API_KEY: process.env.PUBLIC_STRIPE_API_KEY,
-            });
-        }
+      console.log("req params", req.params);
+      Pet.findOne({ _id: req.params.id })
+        .then((pet) => {
+            console.log("inside route", pet);
+            if (req.header('content-type') == 'application/json') {
+                res.json ({
+                    pet: pet,
+                    // For some reason app.locals was not working for this
+                    PUBLIC_STRIPE_API_KEY: process.env.PUBLIC_STRIPE_API_KEY,
+                })
+            } else {
+                res.render('pets-show', {
+                    pet: pet,
+                    // For some reason app.locals was not working for this
+                    PUBLIC_STRIPE_API_KEY: process.env.PUBLIC_STRIPE_API_KEY,
+                });
+            }
     });
   });
 

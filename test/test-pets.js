@@ -11,7 +11,8 @@ const fido =     {
     "favoriteFood": "Liver",
     "picUrl": "http://www.gpamass.com/s/img/emotionheader713297504.jpg",
     "picUrlSq": "https://www.collinsdictionary.com/images/thumb/greyhound_21701074_250.jpg",
-    "description": "Fido is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food"
+    "description": "Fido is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food. Fido is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food.Fido is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food. Fido is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food.Fido is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food. Fido is a dog and he's a good dog who loves to play and hang out with his owners. He also likes to nap and enjoys eating dog food.",
+    "price": 10
 }
 
 chai.use(chaiHttp);
@@ -104,11 +105,12 @@ describe('Pets', ()  => {
   it('should show a SINGLE pet on /pets/<id> GET', (done) => {
     var pet = new Pet(fido);
     const key = process.env.PUBLIC_STRIPE_API_KEY
-    pet.save(() => {
+    pet.save((err, savedPet) => {
+        console.log(err)
       chai.request(server)
-        .get(`/pets/${pet._id}`)
+        .get(`/pets/${savedPet._id}`)
         .end((err, res) => {
-          console.log("here",pet);
+          console.log("here", pet);
           console.log("response", res.error)
           res.should.have.status(200);
           res.should.be.html

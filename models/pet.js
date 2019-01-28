@@ -12,7 +12,7 @@ mongoosePaginate.paginate.options = {
 const PetSchema = new Schema({
     name            : { type: String, required: true }
   , species         : { type: String, required: true }
-  , birthday        : { type: Date, required: true }
+  , birthday        : { type: String, required: true }
   , picUrl          : { type: String }
   , picUrlSq        : { type: String }
   , avatarUrl       : { type: String }
