@@ -18,12 +18,11 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 /** Database connection */
 const mongoose = require('mongoose');
 
-console.log(process.env.MONGODB_URI);
+console.log("database connection", process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/petes-pets', { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -71,10 +70,5 @@ app.use((err, req, res, next) => {
 /** PASS KEYS TO TEMPLATE */
 app.locals.PUBLIC_STRIPE_API_KEY = process.env.PUBLIC_STRIPE_API_KEY
 app.locals.PRIVATE_STRIPE_API_KEY = process.env.PRIVATE_STRIPE_API_KEY
-
-/** Port listener */
-app.listen(PORT, () => {
-    console.log('Pete\'s Pet App listening on port', PORT);
-});
 
 module.exports = app;
