@@ -4,9 +4,9 @@ block content
   .row
     .col-sm-4
       if pet.avatarUrl
-          img.card-img-top(src=pet.avatarUrl + '-square.', alt='Card image cap')
+        img.card-img-top(src=pet.avatarUrl + '-square.', alt='Card image cap')
       else 
-          img.card-img-top(src=pet.picUrlSq, alt='Card image cap')
+        img.card-img-top(src=pet.picUrlSq, alt='Card image cap')
     .col-sm-8
       form(action=`/pets/${pet._id}/purchase`, method='POST')
         script.stripe-button(src='https://checkout.stripe.com/checkout.js',

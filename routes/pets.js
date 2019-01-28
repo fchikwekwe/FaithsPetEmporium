@@ -74,14 +74,20 @@ module.exports = (app) => {
                     pet.avatarUrl = url;
                     pet.save();
                 });
-                {
-                res.send({ pet: pet });
+                if (req.header('content-type') == 'application/json') {
+                    res.json({ pet: pet });
+                } else {
+                    res.send({ pet: pet });
                 }
             });
         } else {
-            res.send({ pet: pet });
+            if (req.header('content-type') == 'application/json') {
+                res.json({ pet: pet });
+            } else {
+                res.send({ pet: pet });
             }
-        })
+        }
+      })
   });
 
   // SHOW PET

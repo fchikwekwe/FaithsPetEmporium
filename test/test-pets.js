@@ -80,18 +80,36 @@ describe('Pets', ()  => {
         .send(fido)
         .end((err, res) => {
           res.should.have.status(200);
-          res.should.be.html
+          if(('content-type') == 'text/html') {
+              res.should.be.html
+          }
           done();
+        });
+  });
+
+  // TEST CREATE JSON
+  it('should create a SINGLE pet on /pets and POST JSON', (done) => {
+    chai.request(server)
+        .post('/pets')
+          .set('content-type', 'application/json')
+          .send(fido)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.should.be.json
+            done();
         });
   });
 
   // TEST SHOW
   it('should show a SINGLE pet on /pets/<id> GET', (done) => {
     var pet = new Pet(fido);
+    const key = process.env.PUBLIC_STRIPE_API_KEY
     pet.save(() => {
       chai.request(server)
         .get(`/pets/${pet._id}`)
         .end((err, res) => {
+          console.log("here",pet);
+          console.log("response", res.error)
           res.should.have.status(200);
           res.should.be.html
           done();
@@ -101,7 +119,7 @@ describe('Pets', ()  => {
   });
 
   // TEST SHOW JSON
-  it('should show a SINGLE pet on /pets/<id> GET JSON', (done) => {
+  it('should show JSON for a SINGLE pet on /pets/<id> GET', (done) => {
     var pet = new Pet(fido);
     pet.save(() => {
       chai.request(server)
@@ -117,7 +135,7 @@ describe('Pets', ()  => {
   });
 
   // TEST EDIT
-  it('should edit a SINGLE pet on /pets/<id>/edit GET', (done) => {
+  it('should show edit form for a SINGLE pet on /pets/<id>/edit GET', (done) => {
     var pet = new Pet(fido);
      pet.save(() => {
        chai.request(server)
@@ -130,6 +148,20 @@ describe('Pets', ()  => {
      });
   });
 
+  // TEST EDIT JSON
+  it('should send JSON to edit a SINGLE pet on /pets/<id>/edit GET JSON', (done) => {
+    var pet = new Pet(fido);
+    pet.save(() => {
+      chai.request(server)
+        .get(`/pets/${pet._id}/edit`)
+          .set('content-type', 'application/json')
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.should.be.json
+            done();
+         });
+     });
+  });
 
   // TEST UPDATE
   it('should update a SINGLE pet on /pets/<id> PUT', (done) => {
@@ -163,11 +195,25 @@ describe('Pets', ()  => {
   // TEST SEARCH
   it('should search ALL pets by name on /search GET', (done) => {
       chai.request(server)
-        .get('/seach?term=norman')
+        .get('/search?term=rex')
         .end((err, res) => {
             res.should.have.status(200);
             res.should.be.html;
             done();
         });
   });
+
+  // TEST SEARCH JSON
+  it('should search ALL pets by name on /search GET JSON', (done) => {
+      chai.request(server)
+        .get('/search?term=rex')
+          .set('content-type', 'application/json')
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.should.be.json;
+            done();
+        });
+  });
+
+  // TEST PURCHASE
 });
