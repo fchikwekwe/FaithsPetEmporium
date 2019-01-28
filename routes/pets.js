@@ -95,7 +95,7 @@ module.exports = (app) => {
       console.log("req params", req.params);
       Pet.findOne({ _id: req.params.id })
         .then((pet) => {
-            console.log("inside route", pet);
+            // console.log("inside route", pet);
             if (req.header('content-type') == 'application/json') {
                 res.json ({
                     pet: pet,
