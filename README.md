@@ -1,4 +1,4 @@
-# Pete's Pet Emporium!
+# Faith's Pet Emporium!
 
 This is the BEW 2.1 course repo where we explored the following concepts: 
 

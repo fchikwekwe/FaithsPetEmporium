@@ -1,5 +1,5 @@
 /*
-*  Petey's main server
+*  Faith's Pet Emporium Main Server
 */
 
 /** Require environment variable(s) */
