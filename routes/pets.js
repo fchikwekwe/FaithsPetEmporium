@@ -143,27 +143,34 @@ module.exports = (app) => {
 
   // SEARCH PET
   app.get('/search', (req, res) => {
+      const page = req.query.page || 1
+
       Pet
-        .find(
+        .paginate(
             { $text : { $search : req.query.term } },
             { score : { $meta : 'textScore' } },
+            { page, limit: 20, sort: { score : { $meta : 'textScore' } } }
         )
-        .sort({ score : { $meta : 'textScore' } })
-        .limit(20)
-        .exec((err, pets) => {
-            if (err) { return res.status(400).send(err) }
+        // .sort({ score : { $meta : 'textScore' } })
+        // .limit(20)
+        .then((results) => {
 
             if (req.header('Content-Type') == 'application/json') {
                 return res.json({
-                    pets: pets,
+                    pets: results.docs,
                     term: req.query.term,
                 });
             } else {
                 return res.render('pets-index', {
-                    pets: pets,
-                    term: req.query.term
+                    pets: results.docs,
+                    term: req.query.term,
+                    pagesCount: results.pages,
+                    currentPage: page,
                 });
             }
+        })
+        .catch((err) => {
+            return res.status(400).send(err)
         });
       });
 

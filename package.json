@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "mocha --exit test/*"
+    "test": "mocha --exit test/*",
+    "seed": "seed"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
