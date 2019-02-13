@@ -148,17 +148,15 @@ module.exports = (app) => {
       Pet
         .paginate(
             { $text : { $search : req.query.term } },
-            { score : { $meta : 'textScore' } },
-            { page, limit: 20, sort: { score : { $meta : 'textScore' } } }
+            { page, limit: 2 }
         )
-        // .sort({ score : { $meta : 'textScore' } })
-        // .limit(20)
         .then((results) => {
-
             if (req.header('Content-Type') == 'application/json') {
                 return res.json({
                     pets: results.docs,
                     term: req.query.term,
+                    pagesCount: results.pages,
+                    currentPage: page,
                 });
             } else {
                 return res.render('pets-index', {
